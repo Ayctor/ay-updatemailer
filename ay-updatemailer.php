@@ -28,6 +28,12 @@ class AyUpdateMailer{
       if(isset($_POST['um_emails'])){
         update_option('um_emails', filter_input(INPUT_POST, 'um_emails', FILTER_SANITIZE_SPECIAL_CHARS));
       }
+      if(isset($_POST['um_api'])){
+        update_option('um_api', filter_input(INPUT_POST, 'um_api', FILTER_SANITIZE_SPECIAL_CHARS));
+      }
+      if(isset($_POST['um_secret']) AND $_POST['um_secret'] != 'secret'){
+        update_option('um_secret', filter_input(INPUT_POST, 'um_secret', FILTER_SANITIZE_SPECIAL_CHARS));
+      }
     }
     ?>
     <div class="wrap">
@@ -39,6 +45,18 @@ class AyUpdateMailer{
             <td>
               <input name="um_emails" type="text" id="um_emails" value="<?php echo get_option('um_emails', ''); ?>" class="regular-text">
               <p class="description">Enter the emails (comma separated) to receive every update report.</p>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row"><label for="um_api">API key</label></th>
+            <td>
+              <input name="um_api" type="text" id="um_api" value="<?php echo get_option('um_api', ''); ?>" class="regular-text">
+            </td>
+          </tr>
+          <tr>
+            <th scope="row"><label for="um_secret">Secret key</label></th>
+            <td>
+              <input name="um_secret" type="password" id="um_secret" value="secret" class="regular-text">
             </td>
           </tr>
         </table>
@@ -85,18 +103,39 @@ class AyUpdateMailer{
       ob_start();
       include(dirname(__FILE__) . '/mail.php');
       $email = ob_get_contents();
-
       ob_end_clean();
 
-      add_filter( 'wp_mail_content_type', function( $content_type ) {
-        return 'text/html';
-      });
+      $api = get_option('um_api', '');
+      $secret = get_option('um_secret', '');
 
-      wp_mail('erwan@ayctor.com', $subject, $email);
-      
-      add_filter( 'wp_mail_content_type', function( $content_type ) {
-        return 'text/plain';
-      });
+      if($api != '' AND $secret != ''){
+
+        include('php-mailjet-v3-simple.class.php');
+
+        $mj = new Mailjet($api, $secret);
+        $params = array(
+          'method' => 'POST',
+          'from' => 'maintenance@ayctor.com',
+          'to' => $emails,
+          'subject' => $subject,
+          'html' => $email
+        );
+
+        $mj->sendEmail($params);
+
+      } else {
+
+        add_filter( 'wp_mail_content_type', function( $content_type ) {
+          return 'text/html';
+        });
+
+        wp_mail($emails, $subject, $email);
+        
+        add_filter( 'wp_mail_content_type', function( $content_type ) {
+          return 'text/plain';
+        });
+
+      }
     }
   }
 
