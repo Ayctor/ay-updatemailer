@@ -12,6 +12,8 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
+include('php-mailjet-v3-simple.class.php');
+
 class AyUpdateMailer{
 
   public function __construct(){
@@ -122,8 +124,6 @@ class AyUpdateMailer{
       $from = get_option('um_from', '');
 
       if($api != '' AND $secret != '' AND $from != ''){
-
-        include('php-mailjet-v3-simple.class.php');
 
         $mj = new Mailjet($api, $secret);
         $params = array(
