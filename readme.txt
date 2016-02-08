@@ -13,6 +13,8 @@ Allow you to send email each time a plugin or WordPress core is updated.
 
 Allow you to send email each time a plugin or WordPress core is updated.
 
+You can also configure Mailjet API to those emails.
+
 == Installation ==
 
 Download the plugin and put it in /wp-content/plugins/. Then activate it and add some code in your theme.
