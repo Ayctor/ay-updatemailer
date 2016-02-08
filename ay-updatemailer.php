@@ -31,6 +31,9 @@ class AyUpdateMailer{
       if(isset($_POST['um_api'])){
         update_option('um_api', filter_input(INPUT_POST, 'um_api', FILTER_SANITIZE_SPECIAL_CHARS));
       }
+      if(isset($_POST['um_from'])){
+        update_option('um_from', filter_input(INPUT_POST, 'um_from', FILTER_SANITIZE_SPECIAL_CHARS));
+      }
       if(isset($_POST['um_secret']) AND $_POST['um_secret'] != 'secret'){
         update_option('um_secret', filter_input(INPUT_POST, 'um_secret', FILTER_SANITIZE_SPECIAL_CHARS));
       }
@@ -45,6 +48,15 @@ class AyUpdateMailer{
             <td>
               <input name="um_emails" type="text" id="um_emails" value="<?php echo get_option('um_emails', ''); ?>" class="regular-text">
               <p class="description">Enter the emails (comma separated) to receive every update report.</p>
+            </td>
+          </tr>
+        </table>
+        <h2 class="title">Mailjet configuration</h2>
+        <table class="form-table">
+          <tr>
+            <th scope="row"><label for="um_from">From email</label></th>
+            <td>
+              <input name="um_from" type="text" id="um_from" value="<?php echo get_option('um_from', ''); ?>" class="regular-text">
             </td>
           </tr>
           <tr>
@@ -107,15 +119,16 @@ class AyUpdateMailer{
 
       $api = get_option('um_api', '');
       $secret = get_option('um_secret', '');
+      $from = get_option('um_from', '');
 
-      if($api != '' AND $secret != ''){
+      if($api != '' AND $secret != '' AND $from != ''){
 
         include('php-mailjet-v3-simple.class.php');
 
         $mj = new Mailjet($api, $secret);
         $params = array(
           'method' => 'POST',
-          'from' => 'maintenance@ayctor.com',
+          'from' => $from,
           'to' => $emails,
           'subject' => $subject,
           'html' => $email
