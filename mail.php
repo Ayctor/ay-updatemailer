@@ -78,25 +78,6 @@
               </table>
             </td>
           </tr>
-          <tr>
-            <td bgcolor="white">
-              <table cellpadding="0" cellspacing="0" border="0" width="640" class="full-width">
-                <tr>
-                  <td colspan="3">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td width="20" class="side"></td>
-                  <td style="font-family: Arial; color: #444; font-size: 12px;">
-                    Pour information, la base de données de votre site est sauvegardée <strong>tous les jours</strong> et les fichiers sont sauvegardés <strong>toutes les semaines</strong>.
-                  </td>
-                  <td width="20" class="side"></td>
-                </tr>
-                <tr>
-                  <td colspan="3">&nbsp;</td>
-                </tr>
-              </table>
-            </td>
-          </tr>
         </table>
       </td>
     </tr>
