@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Ay Update mailer
+Plugin Name: UpdateMailer
 Plugin URI:  http://ayctor.com
 Description: Send an email each time a plugin or WordPress core is updated
 Version:     0.1
